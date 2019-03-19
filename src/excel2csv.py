@@ -9,6 +9,8 @@ def sanitize_filename(str):
     return "".join(char for char in str if char.isalnum())
 
 
+delimiter = ','
+
 parser = argparse.ArgumentParser(description='Excel to CSV converter')
 parser.add_argument('excel_file', type=argparse.FileType(
     mode='r'), help='input file')
@@ -17,19 +19,24 @@ args = parser.parse_args()
 filename = args.excel_file.name
 basename, _ = os.path.splitext(filename)
 
-file = pd.ExcelFile(filename)
-sheets = file.sheet_names
+excel_file = pd.ExcelFile(filename)
+sheets = excel_file.sheet_names
 
 sheet_files = []
-for sheet in tqdm(file.sheet_names):
+for sheet in tqdm(excel_file.sheet_names):
     sheet_filename = f'{basename}_{sanitize_filename(sheet)}.csv'
     try:
-        file = open(sheet_filename, 'x')
+        csv_file = open(sheet_filename, 'x')
     except Exception as e:
         print(f'Cannot write to {sheet_filename} - {e}')
     else:
-        with file:
-            print('foo', file=file)
+        with csv_file:
+            df = excel_file.parse(sheet_name=sheet)
+            for _, row in df.iterrows():
+                row_values = []
+                for _, val in row.iteritems():
+                    row_values.append(str(val))
+                print(delimiter.join(row_values), file=csv_file)
             sheet_files.append(sheet_filename)
 
 if len(sheet_files):
