@@ -1,2 +1,10 @@
 #!/bin/bash
-./venv/bin/python src/excel2csv.py $*
+
+source=$BASH_SOURCE
+while [ -h "$source" ]; do
+  # source is a symlink
+  source=$(readlink "$source")
+done
+script_dir=$(dirname "$source")
+
+$script_dir/venv/bin/python $script_dir/src/excel2csv.py "$@"
