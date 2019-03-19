@@ -11,7 +11,7 @@ def sanitize_filename(str):
 
 parser = argparse.ArgumentParser(description='Excel to CSV converter')
 parser.add_argument('excel_file', type=argparse.FileType(
-    mode='r'), help='input file')
+    mode='rb'), help='input file')
 parser.add_argument('-d', '--delimiter', default=',',
                     type=str, help='CSV delimiter')
 
