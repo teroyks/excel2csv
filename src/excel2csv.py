@@ -20,9 +20,20 @@ basename, _ = os.path.splitext(filename)
 file = pd.ExcelFile(filename)
 sheets = file.sheet_names
 
-sheetfiles = []
+sheet_files = []
 for sheet in tqdm(file.sheet_names):
     sheet_filename = f'{basename}_{sanitize_filename(sheet)}.csv'
-    sheetfiles.append(sheet_filename)
+    try:
+        file = open(sheet_filename, 'x')
+    except Exception as e:
+        print(f'Cannot write to {sheet_filename} - {e}')
+    else:
+        with file:
+            print('foo', file=file)
+            sheet_files.append(sheet_filename)
 
-print(sheetfiles)
+if len(sheet_files):
+    print('Created CSV files: \n' +
+          "".join(f'{csv_file}\n' for csv_file in sheet_files))
+else:
+    print('No CSV files created.')
