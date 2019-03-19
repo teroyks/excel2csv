@@ -26,3 +26,13 @@ optional arguments:
                         CSV delimiter
   -f, --force           force overwriting existing CSV files
 ```
+
+## Example
+
+An example Excel file is included in the data directory.
+
+Cd into the project directory and give the following command:
+
+    ./excel2csv data/months.xlsx
+
+Two CSV files were created in the data directory, containing the sample data from the Excel file.
