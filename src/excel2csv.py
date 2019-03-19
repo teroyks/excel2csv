@@ -20,6 +20,7 @@ parser.add_argument('-f', '--force', action='store_true',
 args = parser.parse_args()
 filename = args.excel_file.name
 basename, _ = os.path.splitext(filename)
+write_mode = 'w' if args.force else 'x'
 
 excel_file = pd.ExcelFile(filename)
 sheets = excel_file.sheet_names
@@ -27,7 +28,6 @@ sheets = excel_file.sheet_names
 sheet_files = []
 for sheet in tqdm(excel_file.sheet_names):
     sheet_filename = f'{basename}_{sanitize_filename(sheet)}.csv'
-    write_mode = 'w' if args.force else 'x'
     try:
         csv_file = open(sheet_filename, write_mode)
     except Exception as e:
