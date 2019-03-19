@@ -14,6 +14,8 @@ parser.add_argument('excel_file', type=argparse.FileType(
     mode='rb'), help='input file')
 parser.add_argument('-d', '--delimiter', default=',',
                     type=str, help='CSV delimiter')
+parser.add_argument('-f', '--force', action='store_true',
+                    help='force overwriting existing CSV files')
 
 args = parser.parse_args()
 filename = args.excel_file.name
@@ -25,8 +27,9 @@ sheets = excel_file.sheet_names
 sheet_files = []
 for sheet in tqdm(excel_file.sheet_names):
     sheet_filename = f'{basename}_{sanitize_filename(sheet)}.csv'
+    write_mode = 'w' if args.force else 'x'
     try:
-        csv_file = open(sheet_filename, 'x')
+        csv_file = open(sheet_filename, write_mode)
     except Exception as e:
         print(f'Cannot write to {sheet_filename} - {e}')
     else:
