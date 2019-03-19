@@ -31,7 +31,8 @@ for sheet in tqdm(excel_file.sheet_names):
         print(f'Cannot write to {sheet_filename} - {e}')
     else:
         with csv_file:
-            df = pd.read_excel(excel_file, sheet_name=sheet, chunk_size=1000)
+            df = pd.read_excel(excel_file, sheet_name=sheet,
+                               chunk_size=1000, header=None)
             for _, row in tqdm(df.iterrows(), total=len(df.index)):
                 row_values = []
                 for _, val in row.iteritems():
