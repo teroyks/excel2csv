@@ -9,11 +9,11 @@ def sanitize_filename(str):
     return "".join(char for char in str if char.isalnum())
 
 
-delimiter = ','
-
 parser = argparse.ArgumentParser(description='Excel to CSV converter')
 parser.add_argument('excel_file', type=argparse.FileType(
     mode='r'), help='input file')
+parser.add_argument('-d', '--delimiter', default=',',
+                    type=str, help='CSV delimiter')
 
 args = parser.parse_args()
 filename = args.excel_file.name
@@ -36,7 +36,7 @@ for sheet in tqdm(excel_file.sheet_names):
                 row_values = []
                 for _, val in row.iteritems():
                     row_values.append(str(val))
-                print(delimiter.join(row_values), file=csv_file)
+                print(args.delimiter.join(row_values), file=csv_file)
             sheet_files.append(sheet_filename)
 
 print()
