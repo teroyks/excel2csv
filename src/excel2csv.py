@@ -32,13 +32,14 @@ for sheet in tqdm(excel_file.sheet_names):
     else:
         with csv_file:
             df = excel_file.parse(sheet_name=sheet)
-            for _, row in df.iterrows():
+            for _, row in tqdm(df.iterrows(), total=len(df.index)):
                 row_values = []
                 for _, val in row.iteritems():
                     row_values.append(str(val))
                 print(delimiter.join(row_values), file=csv_file)
             sheet_files.append(sheet_filename)
 
+print()
 if len(sheet_files):
     print('Created CSV files: \n' +
           "".join(f'{csv_file}\n' for csv_file in sheet_files))
