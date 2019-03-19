@@ -43,9 +43,7 @@ for sheet in tqdm(excel_file.sheet_names):
                 print(args.delimiter.join(row_values), file=csv_file)
             sheet_files.append(sheet_filename)
 
-print()
 if len(sheet_files):
-    print('Created CSV files: \n' +
-          "".join(f'{csv_file}\n' for csv_file in sheet_files))
-else:
-    print('No CSV files created.')
+    print('\n\nCreated CSV files: \n'
+          + "\n".join(csv_file for csv_file in sheet_files)
+          + "\n")
